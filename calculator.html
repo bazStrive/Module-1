@@ -105,7 +105,98 @@
         </table>
     </div>
     <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            console.log('DOM LOADED')
+            // MEMORY OF OUR CALCULATOR
+            let operation = ""
+            let previousResult = 0 // FIRST OPERAND
 
+            const sum = function (x, y) {
+                return x + y
+            }
+            // const sum = (x,y) => x+y
+
+            const diff = function (x, y) {
+                return x - y
+            }
+
+            const mul = function (x, y) {
+                return x * y
+            }
+            const div = function (x, y) {
+                return x / y
+            }
+
+            const numericButtonPressed = function (event) {
+                const numberPressed = event.target.value
+                console.log(numberPressed)
+                const result = document.getElementById("result")
+                if (result.value === '0') {
+                    result.value = numberPressed
+                } else {
+                    result.value = result.value + numberPressed
+                }
+            }
+
+            const functionButtonPressed = function (event) {
+                const keyPressed = event.target.value
+                console.log(keyPressed)
+                const result = document.getElementById("result")
+                switch (keyPressed) {
+                    case "=": // compute and display the result
+                        switch (operation) { // switch between + - / *
+                            case "+":
+                                // first operand + second operand --> result.value
+
+                                result.value = sum(previousResult, parseFloat(result.value))
+                                break;
+                            case "-":
+
+                                result.value = diff(previousResult, parseFloat(result.value))
+                                break;
+                            case "*":
+
+                                result.value = mul(previousResult, parseFloat(result.value))
+                                break;
+                            case "/":
+
+                                result.value = div(previousResult, parseFloat(result.value))
+                                break;
+                            default:
+                                console.log('Default case')
+
+                        }
+                        break;
+                    case "C": // resetting everything
+                        console.log("I'm the C button")
+                        result.value = "0"
+                        previousResult = 0
+                        break;
+                    default:
+                        console.log('KEY PRESSED: ', keyPressed)
+                        previousResult = parseFloat(result.value) // saving first operand
+                        operation = keyPressed // saving operation selected
+                        result.value = "0" // reset to zero to let the user type second operand
+                }
+
+            }
+
+            // ADDING FUNCTIONALITIES TO BUTTONS
+
+            const numericButtons = document.getElementsByClassName("numericButton")
+
+            const functionButtons = document.getElementsByClassName("functionButton")
+
+            for (let button of numericButtons) {
+                button.addEventListener('click', numericButtonPressed)
+            }
+
+            for (let button of functionButtons) {
+                button.addEventListener('click', functionButtonPressed)
+            }
+
+
+        })
     </script>
 </body>
 
